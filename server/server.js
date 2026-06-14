@@ -11,24 +11,41 @@ connectDB();
 
 const app = express();
 
-const normalizeOrigin = (origin) => origin.replace(/\/$/, "");
+const DEFAULT_ALLOWED_ORIGINS = [
+  "http://localhost:5173",
+  "https://ca-narendra-soni-website.vercel.app",
+];
+
+const getOrigin = (value) => {
+  try {
+    return new URL(value).origin;
+  } catch {
+    return value.replace(/\/$/, "");
+  }
+};
 
 const allowedOrigins = new Set(
-  (process.env.CLIENT_URL || "http://localhost:5173")
-    .split(",")
-    .map((origin) => normalizeOrigin(origin.trim()))
+  [
+    ...DEFAULT_ALLOWED_ORIGINS,
+    process.env.CLIENT_URL,
+    process.env.CORS_ORIGINS,
+  ]
+    .filter(Boolean)
+    .flatMap((value) => value.split(","))
+    .map((origin) => getOrigin(origin.trim()))
     .filter(Boolean)
 );
 
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.has(normalizeOrigin(origin))) {
+      if (!origin || allowedOrigins.has(getOrigin(origin))) {
         callback(null, true);
         return;
       }
 
-      callback(new Error(`CORS blocked origin: ${origin}`));
+      console.warn(`CORS rejected origin: ${origin}`);
+      callback(null, false);
     },
   })
 );
