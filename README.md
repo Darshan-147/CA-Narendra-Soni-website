@@ -166,6 +166,25 @@ MongoDB connection string, and update the frontend's API base URL /
 deployment config accordingly (e.g. via an environment variable and a
 reverse proxy, or by setting `baseURL` in `client/src/api/api.js`).
 
+For a Vercel frontend + Render backend deployment, set these environment
+variables in the hosting dashboards:
+
+```env
+# Vercel frontend
+VITE_API_URL=https://your-render-service.onrender.com/api
+
+# Render backend
+MONGO_URI=mongodb+srv://...
+CLIENT_URL=https://your-vercel-app.vercel.app
+```
+
+If you need multiple frontend URLs, such as local development plus production,
+set `CLIENT_URL` as a comma-separated list:
+
+```env
+CLIENT_URL=http://localhost:5173,https://your-vercel-app.vercel.app
+```
+
 ---
 
 ## 8. Notes

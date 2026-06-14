@@ -11,9 +11,25 @@ connectDB();
 
 const app = express();
 
+const normalizeOrigin = (origin) => origin.replace(/\/$/, "");
+
+const allowedOrigins = new Set(
+  (process.env.CLIENT_URL || "http://localhost:5173")
+    .split(",")
+    .map((origin) => normalizeOrigin(origin.trim()))
+    .filter(Boolean)
+);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.has(normalizeOrigin(origin))) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`CORS blocked origin: ${origin}`));
+    },
   })
 );
 app.use(express.json());
