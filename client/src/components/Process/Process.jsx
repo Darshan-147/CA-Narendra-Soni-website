@@ -1,3 +1,5 @@
+import "./Process.css";
+
 const STEPS = [
   {
     number: "01",

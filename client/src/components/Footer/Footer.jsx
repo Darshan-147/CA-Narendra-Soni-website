@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import "./Footer.css";
 
 const Footer = () => {
   const year = new Date().getFullYear();

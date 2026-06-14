@@ -8,7 +8,8 @@ import {
   IconTransfer,
   IconUser,
   IconGavel,
-} from "./icons.jsx";
+} from "../icons.jsx";
+import "./Services.css";
 
 const SERVICES = [
   {

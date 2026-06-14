@@ -1,3 +1,5 @@
+import "./Stats.css";
+
 const STATS = [
   { label: "Professional Qualification", value: "CA, ISA" },
   { label: "Taxation Support", value: "ITR, Litigation" },

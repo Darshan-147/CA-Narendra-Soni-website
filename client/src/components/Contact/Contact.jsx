@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { getCountries, getCountryCallingCode } from "libphonenumber-js";
-import api from "../api/api.js";
-import { sendEnquiryEmail } from "../api/email.js";
+import api from "../../api/api.js";
+import { sendEnquiryEmail } from "../../api/email.js";
+import "./Contact.css";
 
 const SERVICE_OPTIONS = [
   "Company Setup",

@@ -1,0 +1,123 @@
+.ledger {
+  background: var(--ink);
+  color: var(--paper-light);
+  padding: 70px 0;
+}
+
+.ledger__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid rgba(248, 245, 238, 0.18);
+  padding-bottom: 24px;
+}
+
+.ledger__header h2 {
+  color: var(--paper-light);
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+}
+
+.ledger__header span {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+}
+
+.ledger-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 64px;
+}
+
+.ledger-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px dashed rgba(248, 245, 238, 0.22);
+  font-family: var(--font-mono);
+}
+
+.ledger-row__label {
+  font-size: 0.95rem;
+  color: rgba(248, 245, 238, 0.78);
+  white-space: nowrap;
+}
+
+.ledger-row__dots {
+  flex: 1;
+  border-bottom: 2px dotted rgba(248, 245, 238, 0.28);
+  height: 0.6em;
+  min-width: 24px;
+}
+
+.ledger-row__value {
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--gold-soft);
+  font-family: var(--font-display);
+}
+
+@media (max-width: 1024px) {
+  .ledger {
+    padding: 64px 0;
+  }
+
+  .ledger-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .ledger-row,
+  .ledger-row__label,
+  .ledger-row__value {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .ledger {
+    padding: 56px 0;
+  }
+
+  .ledger__header {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+  }
+
+  .ledger__header h2 {
+    font-size: clamp(1.55rem, 8vw, 2rem);
+  }
+
+  .ledger__header span {
+    line-height: 1.55;
+  }
+
+  .ledger-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 4px;
+    padding: 17px 0;
+  }
+
+  .ledger-row__label {
+    white-space: normal;
+    line-height: 1.4;
+  }
+
+  .ledger-row__dots {
+    display: none;
+  }
+
+  .ledger-row__value {
+    font-size: clamp(1.35rem, 8vw, 1.7rem);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+}

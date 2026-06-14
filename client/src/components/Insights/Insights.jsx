@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import api from "../api/api.js";
+import api from "../../api/api.js";
+import "./Insights.css";
 
 const formatDate = (dateString) => {
   try {

@@ -1,0 +1,271 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248, 245, 238, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header__top {
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+}
+
+.site-header__top .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 36px;
+  color: var(--ink-soft);
+}
+
+.site-header__top a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.18s ease;
+}
+
+.site-header__top a:hover {
+  color: var(--gold);
+}
+
+.site-header__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 84px;
+  gap: 32px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  min-width: 0;
+}
+
+.logo__mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.logo__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  min-width: 0;
+}
+
+.logo__text strong {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.logo__text span {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.nav-links a {
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.18s ease;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--gold);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-toggle span,
+.menu-toggle span::before,
+.menu-toggle span::after {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: var(--ink);
+  position: relative;
+  transition: 0.2s ease;
+}
+
+.menu-toggle span::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+}
+
+.menu-toggle span::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+}
+
+@media (max-width: 1024px) {
+  .site-header__top {
+    display: none;
+  }
+
+  .site-header__nav {
+    height: 78px;
+    gap: 20px;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--paper-light);
+    border-bottom: 1px solid var(--line);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 28px;
+    gap: 18px;
+    display: none;
+    max-height: calc(100vh - 78px);
+    overflow-y: auto;
+  }
+
+  .nav-links.is-open {
+    display: flex;
+  }
+
+  .header__actions .btn--outline {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header__nav {
+    height: 72px;
+    gap: 14px;
+  }
+
+  .logo {
+    gap: 10px;
+  }
+
+  .logo__mark {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .logo__text strong {
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+
+  .logo__text span {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+  }
+
+  .menu-toggle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .nav-links {
+    padding: 18px;
+    gap: 14px;
+    max-height: calc(100vh - 72px);
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 375px) {
+  .site-header__nav {
+    height: 68px;
+  }
+
+  .logo {
+    gap: 8px;
+  }
+
+  .logo__mark {
+    width: 36px;
+    height: 36px;
+    font-size: 0.92rem;
+  }
+
+  .logo__text strong {
+    font-size: 0.92rem;
+  }
+
+  .logo__text span {
+    font-size: 0.54rem;
+    letter-spacing: 0.1em;
+  }
+
+  .menu-toggle {
+    width: 38px;
+    height: 38px;
+  }
+}
