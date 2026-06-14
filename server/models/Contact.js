@@ -6,6 +6,7 @@ const contactSchema = new mongoose.Schema(
       type: String,
       required: [true, "Name is required"],
       trim: true,
+      minlength: [5, "Name must be at least 5 characters"],
       maxlength: 100,
     },
     email: {
@@ -19,6 +20,10 @@ const contactSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 20,
+      match: [
+        /^$|^(?:\+\d{1,4} )?\d{5} \d{5}$/,
+        "Please enter a valid phone number",
+      ],
     },
     service: {
       type: String,
@@ -36,6 +41,7 @@ const contactSchema = new mongoose.Schema(
       type: String,
       required: [true, "Message is required"],
       trim: true,
+      minlength: [10, "Message must be at least 10 characters"],
       maxlength: 2000,
     },
     status: {

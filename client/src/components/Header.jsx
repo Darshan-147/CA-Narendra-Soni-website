@@ -5,8 +5,8 @@ const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Services", href: "#services" },
   { label: "Process", href: "#process" },
-  { label: "Insights", href: "#insights" },
   { label: "Commitments", href: "#testimonials" },
+  { label: "Insights", href: "#insights" },
 ];
 
 const Header = () => {
@@ -15,7 +15,7 @@ const Header = () => {
   const handleNavClick = () => setOpen(false);
 
   return (
-    <header className="site-header" id="top">
+    <header className="site-header">
       <div className="site-header__top">
         <div className="container">
           <span>

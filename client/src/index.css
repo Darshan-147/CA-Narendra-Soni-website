@@ -1018,9 +1018,35 @@ h4 {
   outline: none;
 }
 
+.phone-control {
+  display: grid;
+  grid-template-columns: minmax(92px, 0.34fr) 1fr;
+  gap: 10px;
+}
+
+.phone-control select,
+.phone-control input {
+  min-width: 0;
+}
+
+.form-field input[aria-invalid="true"],
+.form-field select[aria-invalid="true"],
+.form-field textarea[aria-invalid="true"] {
+  border-color: var(--stamp);
+  background: #fff8f5;
+}
+
 .form-field textarea {
   resize: vertical;
   min-height: 120px;
+}
+
+.form-error {
+  margin-top: -2px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--stamp);
 }
 
 .form-submit {

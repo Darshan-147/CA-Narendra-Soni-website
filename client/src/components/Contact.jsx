@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getCountries, getCountryCallingCode } from "libphonenumber-js";
 import api from "../api/api.js";
 import { sendEnquiryEmail } from "../api/email.js";
 
@@ -11,33 +12,122 @@ const SERVICE_OPTIONS = [
   "Other",
 ];
 
+const countries = getCountries().map((country) => ({
+  country,
+  code: `+${getCountryCallingCode(country)}`,
+}));
+
 const initialForm = {
   name: "",
   email: "",
+  countryCode: "+91",
   phone: "",
   service: "Company Setup",
   message: "",
 };
 
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const PHONE_PATTERN = /^\d{5} \d{5}$/;
+
+const groupLocalPhoneDigits = (digits) =>
+  [digits.slice(0, 5), digits.slice(5, 10)].filter(Boolean).join(" ");
+
+const formatPhoneNumber = (value) => {
+  const digits = value.replace(/\D/g, "").slice(0, 10);
+  return groupLocalPhoneDigits(digits);
+};
+
+const validateForm = (formData) => {
+  const nextErrors = {};
+  const fullName = formData.name.trim();
+  const email = formData.email.trim();
+  const message = formData.message.trim();
+
+  if (!fullName) {
+    nextErrors.name = "Please enter your full name.";
+  } else if (fullName.length < 5) {
+    nextErrors.name = "Full name must be at least 5 characters.";
+  }
+
+  if (!email) {
+    nextErrors.email = "Please enter your email address.";
+  } else if (!EMAIL_PATTERN.test(email)) {
+    nextErrors.email = "Please enter a valid email address.";
+  }
+
+  if (formData.phone && !PHONE_PATTERN.test(formData.phone)) {
+    nextErrors.phone = "Enter a 10-digit phone number, like 12345 67890.";
+  }
+
+  if (
+    formData.phone &&
+    !countries.some((option) => option.code === formData.countryCode)
+  ) {
+    nextErrors.phone = "Please select a valid country code.";
+  }
+
+  if (!SERVICE_OPTIONS.includes(formData.service)) {
+    nextErrors.service = "Please select a valid service.";
+  }
+
+  if (!message) {
+    nextErrors.message = "Please describe your requirement.";
+  } else if (message.length < 10) {
+    nextErrors.message = "Description must be at least 10 characters.";
+  }
+
+  return nextErrors;
+};
+
 const Contact = () => {
   const [form, setForm] = useState(initialForm);
+  const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState(null); // { type: "success" | "error", message: string }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const nextValue = name === "phone" ? formatPhoneNumber(value) : value;
+
+    setForm((prev) => ({ ...prev, [name]: nextValue }));
+    setErrors((prev) => {
+      if (!prev[name]) return prev;
+      const { [name]: _removed, ...rest } = prev;
+      return rest;
+    });
+    setStatus(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const validationErrors = validateForm(form);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      setStatus({
+        type: "error",
+        message: "Please fix the highlighted fields before sending.",
+      });
+      return;
+    }
+
+    if (submitting) return;
+
     setSubmitting(true);
     setStatus(null);
 
     try {
+      const normalizedForm = {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone ? `${form.countryCode} ${form.phone}` : "",
+        service: form.service,
+        message: form.message.trim(),
+      };
+
       const [contactResult, emailResult] = await Promise.allSettled([
-        api.post("/contact", form),
-        sendEnquiryEmail(form),
+        api.post("/contact", normalizedForm),
+        sendEnquiryEmail(normalizedForm),
       ]);
 
       if (emailResult.status === "rejected") {
@@ -58,10 +148,10 @@ const Contact = () => {
 
       setStatus({
         type: "success",
-        message:
-          `Thank you. Your enquiry has been emailed to Narendra Soni.${saveWarning}`,
+        message: `Thank you. Your enquiry has been emailed to Narendra Soni.${saveWarning}`,
       });
       setForm(initialForm);
+      setErrors({});
     } catch (error) {
       setStatus({
         type: "error",
@@ -97,11 +187,14 @@ const Contact = () => {
           </div>
           <div className="contact__info-item">
             <span>Office</span>
-            <p>204, Second Floor, Avani Icon Opp. Swami Narayan Temple, Haridarshan Char Rasta, Nava Naroda, Ahmedabad</p>
+            <p>
+              204, Second Floor, Avani Icon Opp. Swami Narayan Temple,
+              Haridarshan Char Rasta, Nava Naroda, Ahmedabad
+            </p>
           </div>
         </div>
 
-        <form className="contact-form" onSubmit={handleSubmit}>
+        <form className="contact-form" onSubmit={handleSubmit} noValidate>
           <div className="form-row">
             <div className="form-field">
               <label htmlFor="name">Full Name</label>
@@ -112,8 +205,14 @@ const Contact = () => {
                 placeholder="Your name"
                 value={form.name}
                 onChange={handleChange}
-                required
+                aria-invalid={Boolean(errors.name)}
+                aria-describedby={errors.name ? "name-error" : undefined}
               />
+              {errors.name && (
+                <p className="form-error" id="name-error">
+                  {errors.name}
+                </p>
+              )}
             </div>
             <div className="form-field">
               <label htmlFor="email">Email Address</label>
@@ -124,22 +223,50 @@ const Contact = () => {
                 placeholder="you@company.com"
                 value={form.email}
                 onChange={handleChange}
-                required
+                aria-invalid={Boolean(errors.email)}
+                aria-describedby={errors.email ? "email-error" : undefined}
               />
+              {errors.email && (
+                <p className="form-error" id="email-error">
+                  {errors.email}
+                </p>
+              )}
             </div>
           </div>
 
           <div className="form-row">
             <div className="form-field">
               <label htmlFor="phone">Phone Number</label>
-              <input
-                id="phone"
-                name="phone"
-                type="tel"
-                placeholder="+91 00000 00000"
-                value={form.phone}
-                onChange={handleChange}
-              />
+              <div className="phone-control">
+                <select
+                  id="countryCode"
+                  name="countryCode"
+                  value={form.countryCode}
+                  onChange={handleChange}
+                  aria-label="Country code"
+                >
+                  {countries.map((option) => (
+                    <option key={option.country} value={option.code}>
+                      {option.country} {option.code}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="00000 00000"
+                  value={form.phone}
+                  onChange={handleChange}
+                  aria-invalid={Boolean(errors.phone)}
+                  aria-describedby={errors.phone ? "phone-error" : undefined}
+                />
+              </div>
+              {errors.phone && (
+                <p className="form-error" id="phone-error">
+                  {errors.phone}
+                </p>
+              )}
             </div>
             <div className="form-field">
               <label htmlFor="service">Service Interested In</label>
@@ -148,6 +275,8 @@ const Contact = () => {
                 name="service"
                 value={form.service}
                 onChange={handleChange}
+                aria-invalid={Boolean(errors.service)}
+                aria-describedby={errors.service ? "service-error" : undefined}
               >
                 {SERVICE_OPTIONS.map((option) => (
                   <option key={option} value={option}>
@@ -155,6 +284,11 @@ const Contact = () => {
                   </option>
                 ))}
               </select>
+              {errors.service && (
+                <p className="form-error" id="service-error">
+                  {errors.service}
+                </p>
+              )}
             </div>
           </div>
 
@@ -166,12 +300,18 @@ const Contact = () => {
               placeholder="Briefly describe your requirement..."
               value={form.message}
               onChange={handleChange}
-              required
+              aria-invalid={Boolean(errors.message)}
+              aria-describedby={errors.message ? "message-error" : undefined}
             ></textarea>
+            {errors.message && (
+              <p className="form-error" id="message-error">
+                {errors.message}
+              </p>
+            )}
           </div>
 
           <div className="form-submit">
-            <button type="submit" className="btn btn--primary" disabled={submitting}>
+            <button type="submit" className="btn btn--primary">
               {submitting ? "Sending..." : "Send Enquiry"}
             </button>
             {status && (

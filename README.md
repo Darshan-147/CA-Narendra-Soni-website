@@ -1,17 +1,13 @@
-# Vardaan & Associates — Chartered Accountant Website (MERN)
+# Narendra Soni & Associates — Chartered Accountant Website (MERN)
 
-A single-page marketing website for a Chartered Accountancy firm, inspired by
-the structure of neerajbhagat.com, built on the MERN stack:
+A single-page marketing website for a Chartered Accountancy firm built on the MERN stack:
 
 - **Frontend:** React 18 + Vite, custom CSS (no UI framework), single page
   with Header, Hero, Stats "ledger", About, Services, Process, Testimonials,
   Insights (blog) and Contact sections.
 - **Backend:** Node.js + Express + MongoDB (Mongoose) with two APIs:
   - `POST /api/contact` — saves enquiry/contact form submissions
-  - `GET /api/blog` — serves "Insights" articles (with a seed script)
-
-All branding, copy, contact details, team names, testimonials, etc. are
-**placeholder content** — replace with your real details before going live.
+  - `GET /api/blog` — serves "Insights" articles
 
 ---
 
@@ -79,7 +75,7 @@ npm start
 
 The API runs at `http://localhost:5000`. Quick checks:
 
-- `GET http://localhost:5000/` → `{ "message": "Vardaan & Associates API is running." }`
+- `GET http://localhost:5000/` → `{ "message": "Narendra Soni & Associates API is running." }`
 - `GET http://localhost:5000/api/blog` → list of seeded articles
 - `POST http://localhost:5000/api/contact` → submit `{ name, email, phone, service, message }`
 
@@ -144,7 +140,7 @@ inside the EmailJS template.
 ## 6. Customizing content
 
 - **Branding & copy:** edit text directly inside `client/src/components/*.jsx`
-  (firm name "Vardaan & Associates", founder names, addresses, phone numbers,
+  (firm name "Narendra Soni & Associates", founder names, addresses, phone numbers,
   testimonials, etc.).
 - **Colors & typography:** all design tokens (colors, fonts, spacing) live at
   the top of `client/src/index.css` under `:root`.

@@ -11,7 +11,7 @@ import Footer from "./components/Footer.jsx";
 
 function App() {
   return (
-    <>
+    <div id="top">
       <Header />
       <main>
         <Hero />
@@ -24,7 +24,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 
