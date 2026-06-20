@@ -231,7 +231,7 @@ h4 {
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 18px;
+    padding: 12px 18px;
   }
 
   .section {
@@ -247,12 +247,6 @@ h4 {
     padding: 13px 18px;
     white-space: normal;
     text-align: center;
-  }
-}
-
-@media (max-width: 375px) {
-  .container {
-    padding: 0 16px;
   }
 }
 
