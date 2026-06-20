@@ -4,6 +4,7 @@ import { requireAdminKey } from "../middleware/adminAuth.js";
 
 const router = express.Router();
 
-router.route("/").get(getPosts).post(requireAdminKey, createPost);
+router.get("/posts", getPosts);
+router.post("/createPost", requireAdminKey, createPost);
 
 export default router;

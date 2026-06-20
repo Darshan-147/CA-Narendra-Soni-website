@@ -1,7 +1,7 @@
 import Post from "../models/Post.js";
 
 // @desc    Create a post from a LinkedIn update
-// @route   POST /api/posts
+// @route   POST /api/createPost
 // @access  Private
 export const createPost = async (req, res) => {
   try {

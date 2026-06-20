@@ -56,7 +56,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/contact", contactRoutes);
-app.use("/api/posts", postRoutes);
+app.use("/api", postRoutes);
 
 // Fallback 404 handler
 app.use((req, res) => {

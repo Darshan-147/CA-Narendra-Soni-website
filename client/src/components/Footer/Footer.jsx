@@ -27,9 +27,6 @@ const Footer = () => {
             <h4>Quick Links</h4>
             <ul>
               <li>
-                <a href="#top">Home</a>
-              </li>
-              <li>
                 <a href="#about">About Us</a>
               </li>
               <li>
@@ -65,7 +62,10 @@ const Footer = () => {
           <div className="footer-col">
             <h4>Reach Us</h4>
             <ul>
-              <li>204, Second Floor, Avani Icon Opp. Swami Narayan Temple, Haridarshan Char Rasta, Nava Naroda, Ahmedabad</li>
+              <li>
+                204, Second Floor, Avani Icon Opp. Swami Narayan Temple,
+                Haridarshan Char Rasta, Nava Naroda, Ahmedabad
+              </li>
               <li>
                 <a href="tel:+919712974759">+91 97129 74759</a>
               </li>

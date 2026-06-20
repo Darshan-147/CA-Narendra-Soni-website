@@ -2,7 +2,6 @@ import { useState } from "react";
 import "./Header.css";
 
 const NAV_LINKS = [
-  { label: "Home", href: "#top" },
   { label: "About", href: "#about" },
   { label: "Services", href: "#services" },
   { label: "Process", href: "#process" },

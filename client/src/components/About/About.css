@@ -110,6 +110,9 @@
   .about__inner {
     grid-template-columns: 1fr;
     gap: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .about__portrait {
