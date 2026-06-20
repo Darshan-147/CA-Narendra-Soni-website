@@ -23,7 +23,7 @@ const Insights = () => {
 
     const fetchPosts = async () => {
       try {
-        const res = await api.get("/blog?limit=3");
+        const res = await api.get("/posts?limit=3");
         if (isMounted) {
           setPosts(res.data?.data || []);
           setStatus("success");
@@ -68,24 +68,38 @@ const Insights = () => {
 
         {status === "success" && posts.length === 0 && (
           <p className="insights-status">
-            No insights published yet. Run <code>npm run seed</code> in the
-            server folder to add sample articles.
+            No insights published yet. Check out the LinkedIn page instead -&gt;{" "}
+            <a
+              href="https://www.linkedin.com/in/canarendra-soni/"
+              target="_blank"
+              rel="noreferrer"
+              style={{textDecoration: "underline", color: "#0077b5"}}
+            >
+              Narendra Soni on LinkedIn
+            </a>
           </p>
         )}
 
         {status === "success" && posts.length > 0 && (
           <div className="insights-grid">
             {posts.map((post) => (
-              <article className="insight-card" key={post._id || post.slug}>
+              <article className="insight-card" key={post._id}>
                 <div className="insight-card__media" aria-hidden="true"></div>
                 <div className="insight-card__body">
                   <div className="insight-card__meta">
-                    <span>{post.category}</span>
-                    <span>{formatDate(post.publishedAt)}</span>
+                    <span>{post.category || "General"}</span>
+                    <span>{formatDate(post.date)}</span>
                   </div>
                   <h3>{post.title}</h3>
                   <p>{post.excerpt}</p>
-                  <span className="insight-card__link">Read More -&gt;</span>
+                  <a
+                    className="insight-card__link"
+                    href={post.linkedinUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Read More -&gt;
+                  </a>
                 </div>
               </article>
             ))}

@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import contactRoutes from "./routes/contactRoutes.js";
-import blogRoutes from "./routes/blogRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
 
 dotenv.config();
 
@@ -56,7 +56,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/contact", contactRoutes);
-app.use("/api/blog", blogRoutes);
+app.use("/api/posts", postRoutes);
 
 // Fallback 404 handler
 app.use((req, res) => {

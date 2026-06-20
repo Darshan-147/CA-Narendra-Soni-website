@@ -1,7 +1,7 @@
 {
   "name": "ca-website-server",
   "version": "1.0.0",
-  "description": "Backend API for Chartered Accountant website (contact form + insights/blog)",
+  "description": "Backend API for Chartered Accountant website (contact form + LinkedIn insights)",
   "main": "server.js",
   "type": "module",
   "scripts": {

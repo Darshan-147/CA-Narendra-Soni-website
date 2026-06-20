@@ -4,10 +4,11 @@ A single-page marketing website for a Chartered Accountancy firm built on the ME
 
 - **Frontend:** React 18 + Vite, custom CSS (no UI framework), single page
   with Header, Hero, Stats "ledger", About, Services, Process, Testimonials,
-  Insights (blog) and Contact sections.
-- **Backend:** Node.js + Express + MongoDB (Mongoose) with two APIs:
+  LinkedIn-backed Insights and Contact sections.
+- **Backend:** Node.js + Express + MongoDB (Mongoose) with three APIs:
   - `POST /api/contact` — saves enquiry/contact form submissions
-  - `GET /api/blog` — serves "Insights" articles
+  - `GET /api/posts` - serves LinkedIn-backed "Insights" cards
+  - `POST /api/posts` - saves `{ title, excerpt, linkedinUrl, date }`
 
 ---
 
@@ -57,9 +58,10 @@ Edit `.env` and set your MongoDB connection string:
 MONGO_URI=mongodb://127.0.0.1:27017/ca_website
 PORT=5000
 CLIENT_URL=http://localhost:5173
+ADMIN_POST_KEY=replace-with-a-long-private-random-value
 ```
 
-Seed sample "Insights" (blog) articles:
+Seed sample LinkedIn-backed Insights posts:
 
 ```bash
 npm run seed
@@ -76,8 +78,18 @@ npm start
 The API runs at `http://localhost:5000`. Quick checks:
 
 - `GET http://localhost:5000/` → `{ "message": "Narendra Soni & Associates API is running." }`
-- `GET http://localhost:5000/api/blog` → list of seeded articles
+- `GET http://localhost:5000/api/posts` → list of saved posts
+- `POST http://localhost:5000/api/posts` → save `{ title, excerpt, linkedinUrl, date }`
 - `POST http://localhost:5000/api/contact` → submit `{ name, email, phone, service, message }`
+
+Protected post creation example:
+
+```bash
+curl --location "http://localhost:5000/api/posts" \
+  --header "Content-Type: application/json" \
+  --header "x-admin-key: your-admin-post-key" \
+  --data "{\"title\":\"GST Compliance Update\",\"excerpt\":\"A quick update on GST compliance timelines and what businesses should keep ready.\",\"linkedinUrl\":\"https://www.linkedin.com/posts/your-post-url\",\"date\":\"2026-06-20\"}"
+```
 
 ---
 
@@ -145,8 +157,8 @@ inside the EmailJS template.
 - **Colors & typography:** all design tokens (colors, fonts, spacing) live at
   the top of `client/src/index.css` under `:root`.
 - **Services grid:** edit the `SERVICES` array in `Services.jsx`.
-- **Insights/Blog content:** edit `server/seed.js` and re-run `npm run seed`,
-  or build an admin flow on top of the existing `BlogPost` model.
+- **Insights/Post content:** send `{ title, excerpt, linkedinUrl, date }` to
+  `POST /api/posts`, or edit `server/seed.js` and re-run `npm run seed`.
 - **Contact form fields/options:** edit `Contact.jsx` (frontend) and
   `models/Contact.js` (backend schema, including the `service` enum).
 
@@ -176,6 +188,7 @@ VITE_API_URL=https://your-render-service.onrender.com/api
 # Render backend
 MONGO_URI=mongodb+srv://...
 CLIENT_URL=https://your-vercel-app.vercel.app
+ADMIN_POST_KEY=replace-with-a-long-private-random-value
 ```
 
 If you need multiple frontend URLs, such as local development plus production,
